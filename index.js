@@ -1,48 +1,9 @@
 express = require("express");
 app = express();
-
-app.post("/user/signup",(req,res)=>{
-    res.json(
-        {
-            msg:"signup endpoints"
-        }
-    );
-
-});
-    app.post("/user/signin",(req,res)=>{
-        res.json(
-            {
-                msg:"signin endpoints"
-            }
-        );
-
-});
-
-
-app.get("/user/purchases",(req,res)=>{
-    res.json(
-        {
-            msg:"signin endpoints"
-        }
-    );
-
-});
-
-app.post("/course/purchases",(req,res)=>{
-    res.json(
-        {
-            msg:"signin endpoints"
-        }
-    );
-
-});
-
-app.get("./courses",(req,res)=>{
-    res.json(
-        {
-            msg:"signin endpoints"
-        }
-    );
-});
+const userRouter = require("./router/user");
+const courseRouter = require("./router/course");
+//using Router method to handle endpoints
+app.use("/user",userRouter);  // all the request come to user endpoint will be handled by userRouter
+app.use("/course",courseRouter);
 
 app.listen(3000);
