@@ -3,7 +3,7 @@ const ObjectId = mongoose.Types.ObjectId;
 console.log("connected to database");
 let userSchema = new Schema({
     email : {type : String, unique: true, required: true},
-    password : {type : String, requored : true},
+    password : {type : String, required : true},
     firstName : String,
     lastName : String,
 
@@ -12,7 +12,7 @@ let userSchema = new Schema({
 
 let adminSchema = new Schema({
     email : {type : String, unique: true, required: true},
-    password : {type : String, requored : true},
+    password : {type : String, required : true},
     firstName : String,
     lastName : String,
 });
@@ -37,7 +37,7 @@ const adminModel = mongoose.model("admin", adminSchema);
 const courseModel = mongoose.model("course", courseShema);
 const purchaseModel = mongoose.model("purchase", purchaseShema);
 
-module.export=
+module.exports=
 {
     userModel,adminModel,courseModel,purchaseModel
 };

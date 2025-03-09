@@ -3,6 +3,7 @@ let adminRouter = Router();
 const adminModel  = require("../db");
 
 adminRouter.post("/signup", function(req, res) {
+// destructuring of object 
     res.json({
         msg: "signup endpoint"
     });
