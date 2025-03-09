@@ -2,9 +2,11 @@ const express = require("express");
 const app = express();
 const userRouter = require("./router/user");
 const courseRouter = require("./router/course");
+const adminRouter = require("./router/admin");
 
 //using Router method to handle endpoints
-app.use("/api/v1/user", userRouter);  // all the request come to user endpoint will be handled by userRouter
+app.use("/api/v1/user", userRouter);    //using Router method to handle endpoints
+app.use("/api/v1/admin",adminRouter);
 app.use("/api/v1/course", courseRouter);
 
 app.listen(3000, () => {
