@@ -3,6 +3,8 @@ const app = express();
 const userRouter = require("./router/user");
 const courseRouter = require("./router/course");
 const adminRouter = require("./router/admin");
+const{ adminModel } = require("./db");
+
 
 //using Router method to handle endpoints
 app.use("/api/v1/user", userRouter);    //using Router method to handle endpoints
