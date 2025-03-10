@@ -2,9 +2,10 @@ const { Router } = require("express");
 const user_validation = require("../input_validation/user_validation");
 const bcrypt = require("bcrypt");
 let userRouter = Router();
-const {userModel} = require("../db");
+const {userModel, courseModel, purchaseModel} = require("../db");
 const jwt = require("jsonwebtoken");
-const JWT_SECRET = "dfsadfkjasdfh222232";
+const {JWT_SECRET_USER} = require("../config");
+const usermiddleware = require("../middleware/user");  
 
 // user sign up route handler
 userRouter.post("/signup", async function(req, res) {
@@ -44,6 +45,7 @@ userRouter.post("/signin", async function(req, res) {
     try {
         const user = await userModel.findOne({
             email: email});
+            console.log(user);
         if (!user) {
             return res.status(401).json({
                 msg: "Invalid credentials",
@@ -51,13 +53,15 @@ userRouter.post("/signin", async function(req, res) {
         }
 
         const isPasswordValid = await bcrypt.compare(password, user.password);
+        console.log(isPasswordValid);
         if (!isPasswordValid) {
             return res.status(401).json({
                 msg: "Invalid credentials",
             });
         }
 
-        const token = jwt.sign({ id: user._id }, JWT_SECRET);
+        const token = jwt.sign({ id:user._id },JWT_SECRET_USER);
+        console.log(token);
         res.status(200).json({
             msg: "User signed in successfully",
             token: token,
@@ -70,10 +74,21 @@ userRouter.post("/signin", async function(req, res) {
     }
 });
 
-userRouter.get("/purchases", function(req, res) {
-    res.json({
-        msg: "purchases endpoint",
+userRouter.get("/purchases",usermiddleware ,async function(req, res) {
+    const userId = req.userId;
+    const purchases = await purchaseModel.find({
+        userId
     });
+    const coursedata = await courseModel.find({
+        _id:{$in:purchases.map(x=>x.courseId)}
+    });
+    console.log(coursedata);
+
+    res.json({
+        purchases,
+        coursedata
+    }); 
+
 });
 
 module.exports = userRouter;
